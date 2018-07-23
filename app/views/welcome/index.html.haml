@@ -1,0 +1,4 @@
+%h1 Run Forrest Run
+
+- Run.all.order(created_at: :desc).each do |run|
+  .run= "#{run.user.first_name} #{run.user.last_name} ran #{run.distance.to_f} miles"
