@@ -6,6 +6,6 @@ class Run < ApplicationRecord
   end
 
   def group_by_criteria
-    created_at.to_date.to_s(:db)
+    created_at.in_time_zone('Eastern Time (US & Canada)').to_date.to_s(:db)
   end
 end
