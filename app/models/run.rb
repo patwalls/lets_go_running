@@ -8,4 +8,8 @@ class Run < ApplicationRecord
   def group_by_criteria
     created_at.in_time_zone('Eastern Time (US & Canada)').to_date.to_s(:db)
   end
+
+  def readable_time_of_day
+    created_at.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M %p")
+  end
 end

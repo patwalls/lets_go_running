@@ -3,4 +3,4 @@
 - Run.group_by_day.each do |day, runs|
   %h3= "#{day.to_datetime.strftime('%A')} - #{day}"
   - runs.each do |run|
-    .run= "#{run.user.first_name} #{run.user.last_name} ran #{run.distance.to_f} miles"
+    .run= "#{run.user.first_name} #{run.user.last_name} ran #{run.distance.to_f} miles - #{run.readable_time_of_day}"
