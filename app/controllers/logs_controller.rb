@@ -2,7 +2,7 @@ class LogsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def log
-    return unless text.slice(0,4) == "/run"
+    return unless text&.slice(0,4) == "/run"
 
     create_user if user_does_not_exist?
 
