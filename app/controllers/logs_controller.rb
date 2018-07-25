@@ -6,8 +6,10 @@ class LogsController < ApplicationController
 
     create_user if user_does_not_exist?
 
-    log_run
+    log_run unless already_logged?
   end
+
+  private
 
   def create_user
     User.create!(
@@ -22,7 +24,14 @@ class LogsController < ApplicationController
 
     miles = text.scan(/[-+]?[0-9]*\,?[0-9]+/).join(".").to_f
 
-    user.runs.create!(distance: miles)
+    user.runs.create!(
+      distance: miles,
+      telegram_message_id: telegram_message_id
+    )
+  end
+
+  def already_logged?
+    Run.find_by(telegram_message_id: telegram_message_id)
   end
 
   def user_does_not_exist?
@@ -35,5 +44,9 @@ class LogsController < ApplicationController
 
   def text
     params[:message][:text]
+  end
+
+  def telegram_message_id
+    params[:message][:message_id]
   end
 end
