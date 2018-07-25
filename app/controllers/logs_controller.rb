@@ -24,10 +24,14 @@ class LogsController < ApplicationController
 
     miles = text.scan(/[-+]?[0-9]*\,?[0-9]+/).join(".").to_f
 
-    user.runs.create!(
+    run = user.runs.create!(
       distance: miles,
       telegram_message_id: telegram_message_id
     )
+
+    if run
+      BotSpeak.new.speak("Logged #{miles.to_f} mile run for #{user.first_name}. Great job!")
+    end
   end
 
   def already_logged?
