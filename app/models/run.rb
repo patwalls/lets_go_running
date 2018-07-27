@@ -12,4 +12,9 @@ class Run < ApplicationRecord
   def readable_time_of_day
     created_at.in_time_zone('Eastern Time (US & Canada)').strftime("%I:%M %p")
   end
+
+  def friendly_duration
+    return unless duration
+    Time.at(duration).utc.strftime("%H:%M:%S")
+  end
 end

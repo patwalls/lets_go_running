@@ -22,15 +22,24 @@ class LogsController < ApplicationController
   def log_run
     user = User.find_by(telegram_id: message[:id])
 
-    miles = text.scan(/[-+]?[0-9]*\,?[0-9]+/).join(".").to_f
+    command = text.slice(4,1000)
+
+    distance, duration = command.split("/")
+
+    miles = distance.scan(/[-+]?[0-9]*\,?[0-9]+/).join(".").to_f
+
+    if duration
+      duration = convert_duration(duration)
+    end
 
     run = user.runs.create!(
       distance: miles,
-      telegram_message_id: telegram_message_id
+      duration: duration,
+      telegram_message_id: telegram_message_id,
     )
 
     if run
-      BotSpeak.new.speak("Logged #{miles.to_f} mile run for #{user.first_name}. Great job!")
+      BotSpeak.new.speak("Logged #{miles.to_f} mile run#{with_duration(run)} for #{user.first_name}. Great job!")
     end
   end
 
@@ -38,8 +47,20 @@ class LogsController < ApplicationController
     Run.find_by(telegram_message_id: telegram_message_id)
   end
 
+  def with_duration(run)
+    if run.duration
+      " (#{run.friendly_duration})"
+    else
+      ""
+    end
+  end
+
   def user_does_not_exist?
     User.where(telegram_id: message[:id]).empty?
+  end
+
+  def convert_duration(duration)
+    duration.strip.split(':').map { |a| a.to_i }.inject(0) { |a, b| a * 60 + b}
   end
 
   def message
