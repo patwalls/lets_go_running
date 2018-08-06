@@ -2,6 +2,7 @@ class LogsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def log
+    run_response
     return unless text&.slice(0,4) == "/run"
 
     create_user if user_does_not_exist?
@@ -19,9 +20,15 @@ class LogsController < ApplicationController
     )
   end
 
-  def log_run
-    user = User.find_by(telegram_id: message[:id])
+  def run_response
+    last_run = user.runs.last
 
+    if last_run.created_at > 5.minutes.ago && last_run.description.nil?
+      last_run.update!(description: text)
+    end
+  end
+
+  def log_run
     command = text.slice(4,1000)
 
     distance, duration = command.split("/")
@@ -39,7 +46,7 @@ class LogsController < ApplicationController
     )
 
     if run
-      BotSpeak.new.speak("Logged #{miles.to_f} mile run#{with_duration(run)} for #{user.first_name}. Great job!")
+      BotSpeak.new.speak("Logged #{miles.to_f} mile run#{with_duration(run)} for #{user.first_name}. How was your run?")
     end
   end
 
@@ -73,5 +80,9 @@ class LogsController < ApplicationController
 
   def telegram_message_id
     params[:message][:message_id]
+  end
+
+  def user
+    User.find_by(telegram_id: message[:id])
   end
 end

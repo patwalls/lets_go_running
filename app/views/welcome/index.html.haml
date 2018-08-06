@@ -4,3 +4,6 @@
   %h3= "#{day.to_datetime.strftime('%A')} - #{day}"
   - runs.reverse.each do |run|
     .run= "#{run.user.first_name} #{run.user.last_name} ran #{run.distance.to_f} miles - #{run.readable_time_of_day}"
+    - if run.description
+      .description= "#{run.description}"
+      %br
