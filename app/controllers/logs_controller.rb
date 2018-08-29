@@ -2,7 +2,7 @@ class LogsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def log
-    run_response
+    run_response if user && user.runs.last.created_at > 5.minutes.ago
     return unless text&.slice(0,4) == "/run"
 
     create_user if user_does_not_exist?
@@ -23,7 +23,7 @@ class LogsController < ApplicationController
   def run_response
     last_run = user.runs.last
 
-    if last_run.created_at > 5.minutes.ago && last_run.description.nil?
+    if last_run.description.nil?
       last_run.update!(description: text)
     end
   end
