@@ -1,0 +1,6 @@
+.section
+  %h3 Streaks
+  - User.all.each do |user|
+    .streak
+      = user.name
+      = "- 4 days"

@@ -1,0 +1,6 @@
+.section
+  %h3 Total Distance
+  - User.left_joins(:runs).group(:id).order('COUNT(runs.distance) DESC').each do |user|
+    .user
+      = user.name
+      = "- #{user.runs.sum(:distance).to_f} miles"

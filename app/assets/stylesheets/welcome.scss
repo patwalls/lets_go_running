@@ -3,5 +3,43 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 body {
-  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #F6F9FC;
+}
+
+header {
+  padding: 5px;
+  .left {
+    display: flex
+  }
+}
+
+.home-page {
+  display: flex;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+
+  .section {
+    width: 400px;
+    background-color: white;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+
+    h3 {
+      margin-top: 0px;
+    }
+
+    .question {
+      color: gray;
+    }
+  }
 }

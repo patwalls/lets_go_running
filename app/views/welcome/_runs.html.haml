@@ -1,0 +1,6 @@
+.section
+  %h3 Total Runs
+  - User.left_joins(:runs).group(:id).order('COUNT(runs.id) DESC').each do |user|
+    .user
+      = user.name
+      = "- #{user.runs.count} runs"

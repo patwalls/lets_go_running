@@ -1,0 +1,20 @@
+.section
+  %h3 Running Log
+
+  - Run.group_by_day.sort.reverse.each do |day, runs|
+    %h3= "#{day.to_datetime.strftime('%A')} - #{day}"
+    - runs.reverse.each do |run|
+      .run
+        .name
+          = run.user.name
+        %br
+        = "👟 #{run.distance.to_f} miles"
+        %br
+        = "☀️ #{run.readable_time_of_day}"
+        - if run.duration
+          %br
+          = "⌚️ #{run.duration}"
+        - if run.description
+          %br
+          .question How was your run?
+          .description= "'#{run.description}'"
